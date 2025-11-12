@@ -133,9 +133,7 @@ export function UsersTable({
                   {user.phone}
                 </TableCell>
                 <TableCell className="capitalize">{user.gender}</TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {user.age}
-                </TableCell>
+                <TableCell>{user.age}</TableCell>
               </TableRow>
             ))}
           </TableBody>
