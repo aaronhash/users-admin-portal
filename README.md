@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Users Admin Dashboard
 
-## Getting Started
+A production-lean users administration screen backed by [DummyJSON](https://dummyjson.com). The app demonstrates server-driven pagination, debounced search, gender filtering, and a11y-friendly details views, all powered by React Query for resilient data fetching.
 
-First, run the development server:
+---
+
+### Highlights
+
+- **Server pagination:** `limit=10` and `skip` parameters keep requests efficient.
+- **Debounced search:** 400 ms debounce targets `/users/search` and resets cleanly.
+- **Gender filter:** Toggle All / Male / Female; search results respect the filter client-side.
+- **User details dialog:** Radix Dialog surfaces contact, company, and address info with managed focus.
+- **Error, loading & empty states:** Clear feedback with Retry wired to the active query.
+- **Responsive & theme aware:** Mobile-friendly table plus dark mode via `next-themes`.
+
+---
+
+### Tech Stack
+
+- [Next.js 16](https://nextjs.org/) (App Router, RSC-friendly)
+- [React 19](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [@tanstack/react-query](https://tanstack.com/query/latest)
+- [Tailwind CSS 4](https://tailwindcss.com/) + [tailwind-merge](https://github.com/dcastil/tailwind-merge)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [next-themes](https://github.com/pacocoursey/next-themes) for dark mode
+
+---
+
+### Getting Started
 
 ```bash
+# install dependencies
+npm install
+
+# run in development (http://localhost:3000)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# lint checks
+npm run lint
+
+# production build
+npm run build
+npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+DummyJSON requires no API keys; all requests are made directly from the browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Project Structure
 
-## Learn More
+```
+src/
+├─ app/                # Next.js layout & routing
+├─ lib/                # React Query provider, theme helpers
+├─ components/         # Reusable UI primitives (shadcn)
+└─ features/users/     # Users domain: API, hooks, UI
+```
 
-To learn more about Next.js, take a look at the following resources:
+Key UI:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `features/users/components/UsersList.tsx` orchestrates search, pagination, and filters.
+- `features/users/api/users-api.ts` centralises DummyJSON calls.
+- `components/theme-toggle.tsx` handles the light/dark mode toggle.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+### Testing Error States
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Open DevTools → Network → check **Offline** (or block `https://dummyjson.com/*`).
+2. Trigger a fetch (paginate, search, or open details).
+3. Observe the error banner and Retry control.
+4. Restore connectivity and hit Retry to ensure recovery.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+### Accessibility Notes
+
+- Radix Dialog manages focus trapping and ESC to close.
+- Search input, rows, and pagination controls expose keyboard and screen-reader-friendly semantics.
+- Dialog titles remain available via `VisuallyHidden` while the modal is loading.
+
+---
+
+### Credits
+
+Made by [aaronhash](https://github.com/aaronhash) as part of a timed React + TypeScript challenge. Around ~90 mins dev time since initial project skeleton.
+
+Feedback and suggestions are welcome!
